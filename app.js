@@ -24,7 +24,7 @@ var app = express();
 
 
 //기본 속성 설정
-app.set('port', precess.env.PORT || 80);
+app.set('port', process.env.PORT || 80);
 
 //
 app.use(bodyParser.urlencoded({ extended: false}))
@@ -60,14 +60,14 @@ var UserModel;
 function connectDB(){
     //데이터베이스 연결 정보
     var databaseUrl = 'mongodb://localhost:27017/local'
-}
+
 //데이터 베이스 연결
     console.log('데이터베이스 연결을 시도합니다.');
     mongoose.Promise = global.Promise;
 mongoose.connect(databaseUrl);
 database=mongoose.connection;
 
-database.on('error', consol.error.bind(console, 'mongoose connection error.'));
+database.on('error', console.error.bind(console, 'mongoose connection error.'));
 database.on('open', function(){
   console.log('데이터베이스에 연결되었습니다. : ' + databaseUrl);
 
@@ -91,7 +91,7 @@ database.on('disconnected', function(){
   console.log('연결이 끊어졌습니다. 5초 후 재연결합니다.');
   setInterval(connectDB,5000);
 });
-
+}
 
 
 
@@ -102,7 +102,7 @@ var router = express.Router();
 
 //로그인 라우팅 함수-데이터 베이스의 정보와 비교
 router.route('/process/login').post(function(req,res){
-  console.log('process/login 호출됨.');
+  console.log('/process/login 호출됨.');
 
   //요청 피라미터 확인
   var paramId = req.body.id||req.query.id;
@@ -250,7 +250,7 @@ app.use(errorHandler);
 //서버 시작
 
 //프로세스 종료 시에 데이터베이스 연결 해제
-Process.on('SIGTERM',function (){
+process.on('SIGTERM',function (){
   console.log("프로세스가 종료됩니다.");
   app.close();
 });
